@@ -1,0 +1,249 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1348\cocoasubrtf170
+{\fonttbl\f0\fnil\fcharset0 Menlo-Bold;\f1\fnil\fcharset0 Menlo-Regular;}
+{\colortbl;\red255\green255\blue255;\red127\green0\blue85;\red42\green0\blue255;\red63\green127\blue95;
+\red100\green70\blue50;\red0\green80\blue50;}
+\margl1440\margr1440\vieww28300\viewh14680\viewkind0
+\deftab720
+\pard\pardeftab720
+
+\f0\b\fs24 \cf2 using
+\f1\b0 \cf0  
+\f0\b \cf2 namespace
+\f1\b0 \cf0  std;\
+
+\f0\b \cf2 #include
+\f1\b0 \cf0  \cf3 <iostream>\cf0 \
+\pard\pardeftab720
+
+\f0\b \cf2 \ul \ulc2 #include
+\f1\b0 \cf0 \ulc0  \cf3 \ulc3 "DoublyLinkedList.h" //Can be implemented using SinglyLinkedList as well\cf0 \ulnone \
+\
+\pard\pardeftab720
+\cf4 //LIFO - Insert and Delete at Tail\cf0 \
+\pard\pardeftab720
+
+\f0\b \cf2 template
+\f1\b0 \cf0  <
+\f0\b \cf2 typename
+\f1\b0 \cf0  
+\f0\b \cf5 T
+\f1\b0 \cf0 >\
+
+\f0\b \cf2 class
+\f1\b0 \cf0  \cf6 Stack\cf0  : 
+\f0\b \cf2 protected
+\f1\b0 \cf0  \ul DoublyLinkedList<
+\f0\b \cf5 \ulc5 T
+\f1\b0 \cf0 \ulc0 >\ulnone  \{\
+    
+\f0\b \cf2 public
+\f1\b0 \cf0  :\
+        
+\f0\b \cf2 void
+\f1\b0 \cf0  
+\f0\b pop
+\f1\b0 ();\
+        
+\f0\b \cf2 void
+\f1\b0 \cf0  
+\f0\b push
+\f1\b0 (
+\f0\b \cf5 T
+\f1\b0 \cf0  val);\
+        \ul Node<
+\f0\b \cf5 \ulc5 T
+\f1\b0 \cf0 \ulc0 >\ulnone * 
+\f0\b peek
+\f1\b0 ();\
+        
+\f0\b \cf2 bool
+\f1\b0 \cf0  
+\f0\b isEmpty
+\f1\b0 ();\
+        
+\f0\b \cf2 void
+\f1\b0 \cf0  
+\f0\b printStack
+\f1\b0 ();\
+\};\
+\
+
+\f0\b \cf2 template
+\f1\b0 \cf0  <
+\f0\b \cf2 typename
+\f1\b0 \cf0  
+\f0\b \cf5 T
+\f1\b0 \cf0 >\
+
+\f0\b \cf2 void
+\f1\b0 \cf0  
+\f0\b Stack<T> :: pop
+\f1\b0 () \{\
+    
+\f0\b \cf2 if
+\f1\b0 \cf0  (
+\f0\b \cf2 this
+\f1\b0 \cf0 ->\ul tail\ulnone  == NULL) \{\
+	cout << \cf3 "ERROR : Cannot pop from empty stack!"\cf0  << endl;\
+        
+\f0\b \cf2 return
+\f1\b0 \cf0 ;\
+    \}\
+    \cf4 //\ul \ulc4 cout\ulnone  << "Delete node " << this->tail->data << \ul endl\ulnone ;\cf0 \
+    
+\f0\b \cf2 this
+\f1\b0 \cf0 ->\ul deleteNode\ulnone (
+\f0\b \cf2 this
+\f1\b0 \cf0 ->\ul tail\ulnone );\
+\}\
+\
+
+\f0\b \cf2 template
+\f1\b0 \cf0  <
+\f0\b \cf2 typename
+\f1\b0 \cf0  
+\f0\b \cf5 T
+\f1\b0 \cf0 >\
+
+\f0\b \cf2 void
+\f1\b0 \cf0  
+\f0\b Stack<T> :: push
+\f1\b0 (
+\f0\b \cf5 T
+\f1\b0 \cf0  val) \{\
+    \cf4 //\ul cout\ulnone  << "Insert node " << \ul val\ulnone  << " at tail " << \ul endl\ulnone ;\cf0 \
+    
+\f0\b \cf2 this
+\f1\b0 \cf0 ->\ul insertNodeTail\ulnone (val);\
+\}\
+\
+
+\f0\b \cf2 template
+\f1\b0 \cf0  <
+\f0\b \cf2 typename
+\f1\b0 \cf0  
+\f0\b \cf5 T
+\f1\b0 \cf0 >\
+\pard\pardeftab720
+\cf0 \ul \ulc0 Node<
+\f0\b \cf5 \ulc5 T
+\f1\b0 \cf0 \ulc0 >\ulnone * 
+\f0\b Stack<T> :: peek
+\f1\b0 () \{\
+    \cf4 //\ul \ulc4 cout\ulnone  << "Top of the stack is " << this->tail->data << \ul endl\ulnone ;\cf0 \
+    
+\f0\b \cf2 return
+\f1\b0 \cf0 (
+\f0\b \cf2 this
+\f1\b0 \cf0 ->\ul tail\ulnone );\
+\}\
+\
+\pard\pardeftab720
+
+\f0\b \cf2 template
+\f1\b0 \cf0  <
+\f0\b \cf2 typename
+\f1\b0 \cf0  
+\f0\b \cf5 T
+\f1\b0 \cf0 >\
+
+\f0\b \cf2 bool
+\f1\b0 \cf0  
+\f0\b Stack<T> :: isEmpty
+\f1\b0 () \{\
+    
+\f0\b \cf2 if
+\f1\b0 \cf0  (
+\f0\b \cf2 this
+\f1\b0 \cf0 ->\ul head\ulnone  != NULL && 
+\f0\b \cf2 this
+\f1\b0 \cf0 ->\ul tail\ulnone  != NULL)\
+        
+\f0\b \cf2 return
+\f1\b0 \cf0  
+\f0\b \cf2 false
+\f1\b0 \cf0 ;\
+    
+\f0\b \cf2 return
+\f1\b0 \cf0  
+\f0\b \cf2 true
+\f1\b0 \cf0 ;\
+\}\
+\
+
+\f0\b \cf2 template
+\f1\b0 \cf0  <
+\f0\b \cf2 typename
+\f1\b0 \cf0  
+\f0\b \cf5 T
+\f1\b0 \cf0 >\
+
+\f0\b \cf2 void
+\f1\b0 \cf0  
+\f0\b Stack<T> :: printStack
+\f1\b0 () \{\
+    \ul Node<
+\f0\b \cf5 \ulc5 T
+\f1\b0 \cf0 \ulc0 >\ulnone * n = 
+\f0\b \cf2 this
+\f1\b0 \cf0 ->\ul tail\ulnone ;\
+    
+\f0\b \cf2 if
+\f1\b0 \cf0  (
+\f0\b \cf2 this
+\f1\b0 \cf0 ->\ul tail\ulnone  == NULL)\
+        
+\f0\b \cf2 return
+\f1\b0 \cf0 ;\
+    
+\f0\b \cf2 while
+\f1\b0 \cf0  (n != 
+\f0\b \cf2 this
+\f1\b0 \cf0 ->\ul head\ulnone ) \{\
+        cout << n->\ul data\ulnone  << \ul endl\ulnone  << \cf3 "^"\cf0  << \ul endl\ulnone  << \cf3 "|"\cf0  << \ul endl\ulnone ;\
+        n = n->\ul prev\ulnone ;\
+    \}\
+    cout << n->\ul data\ulnone  << \ul endl\ulnone ; \cf4 //head\cf0 \
+    cout << endl;\
+\}\
+\
+
+\f0\b \cf2 int
+\f1\b0 \cf0  
+\f0\b main
+\f1\b0 () \{\
+    \cf6 Stack\cf0 <
+\f0\b \cf2 int
+\f1\b0 \cf0 > stk;\
+    stk.push(23);\
+    stk.push(45);\
+    stk.push(70);\
+    stk.push(81);\
+    stk.push(92);\
+    stk.printStack();\
+    stk.pop();\
+    stk.pop();\
+    stk.printStack();\
+    cout << \cf3 "Top of the stack is "\cf0  << stk.peek()->\ul data\ulnone  << \ul endl\ulnone ;\
+    
+\f0\b \cf2 if
+\f1\b0 \cf0  (stk.isEmpty())\
+        cout << \cf3 "Stack is Empty"\cf0  << endl;\
+    
+\f0\b \cf2 else
+\f1\b0 \cf0  \
+        cout << \cf3 "Stack is NOT Empty"\cf0  << endl;\
+    stk.pop();\
+    stk.pop();\
+    stk.pop();\
+    
+\f0\b \cf2 if
+\f1\b0 \cf0  (stk.isEmpty())\
+        cout << \cf3 "Stack is Empty"\cf0  << endl;\
+    
+\f0\b \cf2 else
+\f1\b0 \cf0  \
+        cout << \cf3 "Stack is NOT Empty"\cf0  << endl;\
+\
+\}\
+}
