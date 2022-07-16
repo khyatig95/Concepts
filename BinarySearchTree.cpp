@@ -1,451 +1,182 @@
-{\rtf1\ansi\ansicpg1252\cocoartf1348\cocoasubrtf170
-{\fonttbl\f0\fnil\fcharset0 Menlo-Bold;\f1\fnil\fcharset0 Menlo-Regular;}
-{\colortbl;\red255\green255\blue255;\red127\green0\blue85;\red42\green0\blue255;\red100\green70\blue50;
-\red0\green80\blue50;\red0\green0\blue192;\red63\green127\blue95;}
-\margl1440\margr1440\vieww10800\viewh8400\viewkind0
-\deftab720
-\pard\pardeftab720
+#include <iostream>
+using namespace std;
 
-\f0\b\fs24 \cf2 #include
-\f1\b0 \cf0  \cf3 <iostream>\cf0 \
+template <typename T>
+class Node {
+public :
+	T val;
+	Node* left;
+	Node* right;
 
-\f0\b \cf2 using
-\f1\b0 \cf0  
-\f0\b \cf2 namespace
-\f1\b0 \cf0  std;\
-\
+	Node(T x) {
+		val = x;
+		left = NULL;
+		right = NULL;
+	}
+};
 
-\f0\b \cf2 template
-\f1\b0 \cf0  <
-\f0\b \cf2 typename
-\f1\b0 \cf0  
-\f0\b \cf4 T
-\f1\b0 \cf0 >\
+template <typename T>
+class BinarySearchTree {
+public :
+	Node<T>* root;
+	BinarySearchTree() {
+		root = NULL;
+	}
+	void insertNode(T newVal, Node<T>* start);
+	bool findNode(T newVal);
+	Node<T>* deleteNode(T delVal, Node<T>* start);  //returns replacement of the node deleted
+	Node<T>* getSmallest(Node<T>* n);
+	void inOrderTraversal(Node<T>* n);
+};
 
-\f0\b \cf2 class
-\f1\b0 \cf0  \cf5 Node\cf0  \{\
+template <typename T>
+void BinarySearchTree<T> :: insertNode(T newVal, Node<T>* start) {
+	if (root == NULL) {
+		root = new Node<T>(newVal);
+		return;
+	}
 
-\f0\b \cf2 public
-\f1\b0 \cf0  :\
-	
-\f0\b \cf4 T
-\f1\b0 \cf0  \cf6 val\cf0 ;\
-	\cf5 Node\cf0 * \cf6 left\cf0 ;\
-	\cf5 Node\cf0 * \cf6 right\cf0 ;\
-\
-	
-\f0\b Node
-\f1\b0 (
-\f0\b \cf4 T
-\f1\b0 \cf0  x) \{\
-		\cf6 val\cf0  = x;\
-		\cf6 left\cf0  = NULL;\
-		\cf6 right\cf0  = NULL;\
-	\}\
-\};\
-\
+	if (newVal <= start->val) {
+		if (start->left == NULL) {
+			start->left = new Node<T>(newVal);
+			return;
+		} else
+			insertNode(newVal, start->left);
+	} else {
+		if (start->right == NULL) {
+			start->right = new Node<T>(newVal);
+			return;
+		} else
+			insertNode(newVal, start->right);
+	}
+}
 
-\f0\b \cf2 template
-\f1\b0 \cf0  <
-\f0\b \cf2 typename
-\f1\b0 \cf0  
-\f0\b \cf4 T
-\f1\b0 \cf0 >\
+template <typename T>
+bool BinarySearchTree<T> :: findNode(T newVal) {
+	Node<T>* n = root;
+	while(n != NULL) {
+		if (n->val == newVal)
+			return true;
+		if (newVal < n->val)
+			n = n->left;
+		else
+			n = n->right;
+	}
+	return false;
+}
 
-\f0\b \cf2 class
-\f1\b0 \cf0  \cf5 BinarySearchTree\cf0  \{\
+template <typename T>
+Node<T>* BinarySearchTree<T> :: deleteNode(T delVal, Node<T>* start) {
+	if (root == NULL) {
+		cout << "ERROR : Cant delete from an empty tree" << endl;
+		return root;
+	}
 
-\f0\b \cf2 public
-\f1\b0 \cf0  :\
-	\cf5 Node\cf0 <
-\f0\b \cf4 T
-\f1\b0 \cf0 >* \cf6 root\cf0 ;\
-	
-\f0\b BinarySearchTree
-\f1\b0 () \{\
-		\cf6 root\cf0  = NULL;\
-	\}\
-	
-\f0\b \cf2 void
-\f1\b0 \cf0  
-\f0\b insertNode
-\f1\b0 (
-\f0\b \cf4 T
-\f1\b0 \cf0  newVal, \cf5 Node\cf0 <
-\f0\b \cf4 T
-\f1\b0 \cf0 >* start);\
-	
-\f0\b \cf2 bool
-\f1\b0 \cf0  
-\f0\b findNode
-\f1\b0 (
-\f0\b \cf4 T
-\f1\b0 \cf0  newVal);\
-	\cf5 Node\cf0 <
-\f0\b \cf4 T
-\f1\b0 \cf0 >* 
-\f0\b deleteNode
-\f1\b0 (
-\f0\b \cf4 T
-\f1\b0 \cf0  delVal, \cf5 Node\cf0 <
-\f0\b \cf4 T
-\f1\b0 \cf0 >* start);  \cf7 //returns replacement of the node deleted\cf0 \
-	\cf5 Node\cf0 <
-\f0\b \cf4 T
-\f1\b0 \cf0 >* 
-\f0\b getSmallest
-\f1\b0 (\cf5 Node\cf0 <
-\f0\b \cf4 T
-\f1\b0 \cf0 >* n);\
-	
-\f0\b \cf2 void
-\f1\b0 \cf0  
-\f0\b inOrderTraversal
-\f1\b0 (\cf5 Node\cf0 <
-\f0\b \cf4 T
-\f1\b0 \cf0 >* n);\
-\};\
-\
+	if (delVal < start->val)
+		start->left = deleteNode(delVal, start->left);
+	else if (delVal > start->val)
+		start->right = deleteNode(delVal, start->right);
+	else { //start's val == delVal
+		if (start->left == NULL && start->right == NULL) {
+			cout << "Deleting " << delVal << " with no children" << endl;
+			delete start;
+			return NULL;
+		} else if (start->left == NULL) {
+			Node<T>* temp = start->right;
+			cout << "Deleting " << delVal << " with no left child and replacing with " << temp->val << endl;
+			delete start;
+			return temp;
+		} else if (start->right == NULL) {
+			Node<T>* temp = start->left;
+			cout << "Deleting " << delVal << " with no right child and replacing with " << temp->val << endl;
+			delete start;
+			return temp;
+		} else {
+		   Node<T>* temp = getSmallest(start->right);
+		   start->val= temp->val;
+		   cout << "Deleting " << delVal << " with both children and replacing with " << temp->val << endl;
+		   start->right = deleteNode(temp->val, start->right); //Delete the element we are replacing
+		}
+	}
+	return start;
+}
 
-\f0\b \cf2 template
-\f1\b0 \cf0  <
-\f0\b \cf2 typename
-\f1\b0 \cf0  
-\f0\b \cf4 T
-\f1\b0 \cf0 >\
+template <typename T>
+Node<T>* BinarySearchTree<T> :: getSmallest(Node<T>* n) {
+	while(n->left != NULL)
+		n = n->left;
+	return n;
+}
 
-\f0\b \cf2 void
-\f1\b0 \cf0  
-\f0\b BinarySearchTree<T> :: insertNode
-\f1\b0 (
-\f0\b \cf4 T
-\f1\b0 \cf0  newVal, \cf5 Node\cf0 <
-\f0\b \cf4 T
-\f1\b0 \cf0 >* start) \{\
-	
-\f0\b \cf2 if
-\f1\b0 \cf0  (\cf6 root\cf0  == NULL) \{\
-		\cf6 root\cf0  = 
-\f0\b \cf2 new
-\f1\b0 \cf0  \cf5 Node\cf0 <
-\f0\b \cf4 T
-\f1\b0 \cf0 >(newVal);\
-		
-\f0\b \cf2 return
-\f1\b0 \cf0 ;\
-	\}\
-\
-	
-\f0\b \cf2 if
-\f1\b0 \cf0  (newVal <= start->\cf6 val\cf0 ) \{\
-		
-\f0\b \cf2 if
-\f1\b0 \cf0  (start->\cf6 left\cf0  == NULL) \{\
-			start->\cf6 left\cf0  = 
-\f0\b \cf2 new
-\f1\b0 \cf0  \cf5 Node\cf0 <
-\f0\b \cf4 T
-\f1\b0 \cf0 >(newVal);\
-			
-\f0\b \cf2 return
-\f1\b0 \cf0 ;\
-		\} 
-\f0\b \cf2 else
-\f1\b0 \cf0 \
-			insertNode(newVal, start->\cf6 left\cf0 );\
-	\} 
-\f0\b \cf2 else
-\f1\b0 \cf0  \{\
-		
-\f0\b \cf2 if
-\f1\b0 \cf0  (start->\cf6 right\cf0  == NULL) \{\
-			start->\cf6 right\cf0  = 
-\f0\b \cf2 new
-\f1\b0 \cf0  \cf5 Node\cf0 <
-\f0\b \cf4 T
-\f1\b0 \cf0 >(newVal);\
-			
-\f0\b \cf2 return
-\f1\b0 \cf0 ;\
-		\} 
-\f0\b \cf2 else
-\f1\b0 \cf0 \
-			insertNode(newVal, start->\cf6 right\cf0 );\
-	\}\
-\}\
-\
 
-\f0\b \cf2 template
-\f1\b0 \cf0  <
-\f0\b \cf2 typename
-\f1\b0 \cf0  
-\f0\b \cf4 T
-\f1\b0 \cf0 >\
+template <typename T>
+void BinarySearchTree<T> :: inOrderTraversal(Node<T>* n) {
+    if (n == NULL)
+        return;
+    inOrderTraversal(n->left);
+    cout << n->val << ", ";
+    inOrderTraversal(n->right);
+}
 
-\f0\b \cf2 bool
-\f1\b0 \cf0  
-\f0\b BinarySearchTree<T> :: findNode
-\f1\b0 (
-\f0\b \cf4 T
-\f1\b0 \cf0  newVal) \{\
-	\cf5 Node\cf0 <
-\f0\b \cf4 T
-\f1\b0 \cf0 >* n = \cf6 root\cf0 ;\
-	
-\f0\b \cf2 while
-\f1\b0 \cf0 (n != NULL) \{\
-		
-\f0\b \cf2 if
-\f1\b0 \cf0  (n->\cf6 val\cf0  == newVal)\
-			
-\f0\b \cf2 return
-\f1\b0 \cf0  
-\f0\b \cf2 true
-\f1\b0 \cf0 ;\
-		
-\f0\b \cf2 if
-\f1\b0 \cf0  (newVal < n->\cf6 val\cf0 )\
-			n = n->\cf6 left\cf0 ;\
-		
-\f0\b \cf2 else
-\f1\b0 \cf0 \
-			n = n->\cf6 right\cf0 ;\
-	\}\
-	
-\f0\b \cf2 return
-\f1\b0 \cf0  
-\f0\b \cf2 false
-\f1\b0 \cf0 ;\
-\}\
-\
+int main() {
+	//Creating test tree
+	//        8
+	//      /   \
+	//     5     25
+	//    /      /
+	//  -1      15
+	//         /  \
+	//        13  16
+	// 				\
+	//				17
 
-\f0\b \cf2 template
-\f1\b0 \cf0  <
-\f0\b \cf2 typename
-\f1\b0 \cf0  
-\f0\b \cf4 T
-\f1\b0 \cf0 >\
-\pard\pardeftab720
-\cf5 Node\cf0 <
-\f0\b \cf4 T
-\f1\b0 \cf0 >* 
-\f0\b BinarySearchTree<T> :: deleteNode
-\f1\b0 (
-\f0\b \cf4 T
-\f1\b0 \cf0  delVal, \cf5 Node\cf0 <
-\f0\b \cf4 T
-\f1\b0 \cf0 >* start) \{\
-	
-\f0\b \cf2 if
-\f1\b0 \cf0  (\cf6 root\cf0  == NULL) \{\
-		cout << \cf3 "ERROR : \ul Cant\ulnone  delete from an empty tree"\cf0  << endl;\
-		
-\f0\b \cf2 return
-\f1\b0 \cf0  \cf6 root\cf0 ;\
-	\}\
-\
-	
-\f0\b \cf2 if
-\f1\b0 \cf0  (delVal < start->\cf6 val\cf0 )\
-		start->\cf6 left\cf0  = deleteNode(delVal, start->\cf6 left\cf0 );\
-	
-\f0\b \cf2 else
-\f1\b0 \cf0  
-\f0\b \cf2 if
-\f1\b0 \cf0  (delVal > start->\cf6 val\cf0 )\
-		start->\cf6 right\cf0  = deleteNode(delVal, start->\cf6 right\cf0 );\
-	
-\f0\b \cf2 else
-\f1\b0 \cf0  \{ \cf7 //start's \ul val\ulnone  == delVal\cf0 \
-		
-\f0\b \cf2 if
-\f1\b0 \cf0  (start->\cf6 left\cf0  == NULL && start->\cf6 right\cf0  == NULL) \{\
-			cout << \cf3 "Deleting "\cf0  << delVal << \cf3 " with no children"\cf0  << endl;\
-			
-\f0\b \cf2 delete
-\f1\b0 \cf0  start;\
-			
-\f0\b \cf2 return
-\f1\b0 \cf0  NULL;\
-		\} 
-\f0\b \cf2 else
-\f1\b0 \cf0  
-\f0\b \cf2 if
-\f1\b0 \cf0  (start->\cf6 left\cf0  == NULL) \{\
-			\cf5 Node\cf0 <
-\f0\b \cf4 T
-\f1\b0 \cf0 >* temp = start->\cf6 right\cf0 ;\
-			cout << \cf3 "Deleting "\cf0  << delVal << \cf3 " with no left child and replacing with "\cf0  << temp->\cf6 val\cf0  << endl;\
-			
-\f0\b \cf2 delete
-\f1\b0 \cf0  start;\
-			
-\f0\b \cf2 return
-\f1\b0 \cf0  temp;\
-		\} 
-\f0\b \cf2 else
-\f1\b0 \cf0  
-\f0\b \cf2 if
-\f1\b0 \cf0  (start->\cf6 right\cf0  == NULL) \{\
-			\cf5 Node\cf0 <
-\f0\b \cf4 T
-\f1\b0 \cf0 >* temp = start->\cf6 left\cf0 ;\
-			cout << \cf3 "Deleting "\cf0  << delVal << \cf3 " with no right child and replacing with "\cf0  << temp->\cf6 val\cf0  << endl;\
-			
-\f0\b \cf2 delete
-\f1\b0 \cf0  start;\
-			
-\f0\b \cf2 return
-\f1\b0 \cf0  temp;\
-		\} 
-\f0\b \cf2 else
-\f1\b0 \cf0  \{\
-		   \cf5 Node\cf0 <
-\f0\b \cf4 T
-\f1\b0 \cf0 >* temp = getSmallest(start->\cf6 right\cf0 );\
-		   start->\cf6 val\cf0 = temp->\cf6 val\cf0 ;\
-		   cout << \cf3 "Deleting "\cf0  << delVal << \cf3 " with both children and replacing with "\cf0  << temp->\cf6 val\cf0  << endl;\
-		   start->\cf6 right\cf0  = deleteNode(temp->\cf6 val\cf0 , start->\cf6 right\cf0 ); \cf7 //Delete the element we are replacing\cf0 \
-		\}\
-	\}\
-	
-\f0\b \cf2 return
-\f1\b0 \cf0  start;\
-\}\
-\
-\pard\pardeftab720
+	BinarySearchTree<int>* tree1 = new BinarySearchTree<int>();
+	tree1->insertNode(8, tree1->root);
+	tree1->insertNode(5, tree1->root);
+	tree1->insertNode(-1, tree1->root);
+	tree1->insertNode(25, tree1->root);
+	tree1->insertNode(15, tree1->root);
+	tree1->insertNode(16, tree1->root);
+	tree1->insertNode(13, tree1->root);
+	tree1->insertNode(17, tree1->root);
 
-\f0\b \cf2 template
-\f1\b0 \cf0  <
-\f0\b \cf2 typename
-\f1\b0 \cf0  
-\f0\b \cf4 T
-\f1\b0 \cf0 >\
-\pard\pardeftab720
-\cf5 Node\cf0 <
-\f0\b \cf4 T
-\f1\b0 \cf0 >* 
-\f0\b BinarySearchTree<T> :: getSmallest
-\f1\b0 (\cf5 Node\cf0 <
-\f0\b \cf4 T
-\f1\b0 \cf0 >* n) \{\
-	
-\f0\b \cf2 while
-\f1\b0 \cf0 (n->\cf6 left\cf0  != NULL)\
-		n = n->\cf6 left\cf0 ;\
-	
-\f0\b \cf2 return
-\f1\b0 \cf0  n;\
-\}\
-\
-\
-\pard\pardeftab720
 
-\f0\b \cf2 template
-\f1\b0 \cf0  <
-\f0\b \cf2 typename
-\f1\b0 \cf0  
-\f0\b \cf4 T
-\f1\b0 \cf0 >\
+	cout << "Root is " << tree1->root->val << endl;
+	cout << "Root->left is " << tree1->root->left->val << endl;
+	cout << "Root->right is " << tree1->root->right->val << endl;
+	cout << "Root->left->left is " << tree1->root->left->left->val << endl;
+	cout << "Root->right->left is " << tree1->root->right->left->val << endl;
+	cout << "Root->right->left->right is " << tree1->root->right->left->right->val << endl;
+	cout << "Root->right->left->left is " << tree1->root->right->left->left->val << endl;
+	cout << "Root->right->left->right->right is " << tree1->root->right->left->right->right->val << endl;
 
-\f0\b \cf2 void
-\f1\b0 \cf0  
-\f0\b BinarySearchTree<T> :: inOrderTraversal
-\f1\b0 (\cf5 Node\cf0 <
-\f0\b \cf4 T
-\f1\b0 \cf0 >* n) \{\
-    
-\f0\b \cf2 if
-\f1\b0 \cf0  (n == NULL)\
-        
-\f0\b \cf2 return
-\f1\b0 \cf0 ;\
-    inOrderTraversal(n->\cf6 left\cf0 );\
-    cout << n->\cf6 val\cf0  << \cf3 ", "\cf0 ;\
-    inOrderTraversal(n->\cf6 right\cf0 );\
-\}\
-\
 
-\f0\b \cf2 int
-\f1\b0 \cf0  
-\f0\b main
-\f1\b0 () \{\
-	\cf7 //Creating test tree\cf0 \
-	\cf7 //        8\cf0 \
-	\cf7 //      /   \\\cf0 \
-\pard\pardeftab720
-\cf7 	//     5     25\cf0 \
-	\cf7 //    /      /\cf0 \
-	\cf7 //  -1      15\cf0 \
-	\cf7 //         /  \\\cf0 \
-\cf7 	//        13  16\cf0 \
-	\cf7 // 				\\\cf0 \
-\cf7 	//				17\cf0 \
-\
-	\cf5 BinarySearchTree\cf0 <
-\f0\b \cf2 int
-\f1\b0 \cf0 >* tree1 = 
-\f0\b \cf2 new
-\f1\b0 \cf0  \cf5 BinarySearchTree\cf0 <
-\f0\b \cf2 int
-\f1\b0 \cf0 >();\
-	tree1->insertNode(8, tree1->\cf6 root\cf0 );\
-	tree1->insertNode(5, tree1->\cf6 root\cf0 );\
-	tree1->insertNode(-1, tree1->\cf6 root\cf0 );\
-	tree1->insertNode(25, tree1->\cf6 root\cf0 );\
-	tree1->insertNode(15, tree1->\cf6 root\cf0 );\
-	tree1->insertNode(16, tree1->\cf6 root\cf0 );\
-	tree1->insertNode(13, tree1->\cf6 root\cf0 );\
-	tree1->insertNode(17, tree1->\cf6 root\cf0 );\
-\
-\
-	cout << \cf3 "Root is "\cf0  << tree1->\cf6 root\cf0 ->\cf6 val\cf0  << endl;\
-	cout << \cf3 "Root->left is "\cf0  << tree1->\cf6 root\cf0 ->\cf6 left\cf0 ->\cf6 val\cf0  << endl;\
-	cout << \cf3 "Root->right is "\cf0  << tree1->\cf6 root\cf0 ->\cf6 right\cf0 ->\cf6 val\cf0  << endl;\
-	cout << \cf3 "Root->left->left is "\cf0  << tree1->\cf6 root\cf0 ->\cf6 left\cf0 ->\cf6 left\cf0 ->\cf6 val\cf0  << endl;\
-	cout << \cf3 "Root->right->left is "\cf0  << tree1->\cf6 root\cf0 ->\cf6 right\cf0 ->\cf6 left\cf0 ->\cf6 val\cf0  << endl;\
-	cout << \cf3 "Root->right->left->right is "\cf0  << tree1->\cf6 root\cf0 ->\cf6 right\cf0 ->\cf6 left\cf0 ->\cf6 right\cf0 ->\cf6 val\cf0  << endl;\
-	cout << \cf3 "Root->right->left->left is "\cf0  << tree1->\cf6 root\cf0 ->\cf6 right\cf0 ->\cf6 left\cf0 ->\cf6 left\cf0 ->\cf6 val\cf0  << endl;\
-	cout << \cf3 "Root->right->left->right->right is "\cf0  << tree1->\cf6 root\cf0 ->\cf6 right\cf0 ->\cf6 left\cf0 ->\cf6 right\cf0 ->\cf6 right\cf0 ->\cf6 val\cf0  << endl;\
-\
-\
-	tree1->inOrderTraversal(tree1->\cf6 root\cf0 );\
-	cout << endl;\
-\
-	\cf7 //x is present in tree\cf0 \
-	\cf7 //x is not present in tree\cf0 \
-	\cf7 //x is root\cf0 \
-	
-\f0\b \cf2 int
-\f1\b0 \cf0  x = 8;\
-	
-\f0\b \cf2 if
-\f1\b0 \cf0  (tree1->findNode(x))\
-		cout << x << \cf3 " is present in the tree"\cf0  << endl;\
-	
-\f0\b \cf2 else
-\f1\b0 \cf0 \
-		cout << x << \cf3 " is NOT present in the tree"\cf0  << endl;\
-\
-	\cf7 //Delete an existing element\cf0 \
-	\cf7 //     no children\cf0 \
-	\cf7 //     left child only\cf0 \
-	\cf7 //     right child only\cf0 \
-	\cf7 //     both children\cf0 \
-	\cf7 //Delete a non-existent element\cf0 \
-	
-\f0\b \cf2 int
-\f1\b0 \cf0  y = 105;\
-	tree1->\cf6 root\cf0  = tree1->deleteNode(y, tree1->\cf6 root\cf0 );\
-	tree1->inOrderTraversal(tree1->\cf6 root\cf0 );\
-	cout << endl;\
-\
-	\cf7 //Delete from empty tree\cf0 \
-	\cf7 //BinarySearchTree\ul <int>\ulnone * tree2 = new BinarySearchTree\ul <int>\ulnone ();\cf0 \
-	\cf7 //tree2->deleteNode(25, tree2->root);\cf0 \
-\
-    
-\f0\b \cf2 return
-\f1\b0 \cf0  0;\
-\}\
+	tree1->inOrderTraversal(tree1->root);
+	cout << endl;
+
+	//x is present in tree
+	//x is not present in tree
+	//x is root
+	int x = 8;
+	if (tree1->findNode(x))
+		cout << x << " is present in the tree" << endl;
+	else
+		cout << x << " is NOT present in the tree" << endl;
+
+	//Delete an existing element
+	//     no children
+	//     left child only
+	//     right child only
+	//     both children
+	//Delete a non-existent element
+	int y = 105;
+	tree1->root = tree1->deleteNode(y, tree1->root);
+	tree1->inOrderTraversal(tree1->root);
+	cout << endl;
+
+	//Delete from empty tree
+	//BinarySearchTree<int>* tree2 = new BinarySearchTree<int>();
+	//tree2->deleteNode(25, tree2->root);
+
+    return 0;
 }
