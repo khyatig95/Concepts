@@ -39,6 +39,13 @@ void LinkedList<T> :: deleteNodewithVal(T val) {
     Node<T>* ptr;
     if (head == NULL)
         return;
+    //Process head
+    if (head->data == val) {
+        ptr = head;
+        cout << "The element at head will be deleted " << head->data << endl;
+        head = head->next;
+        delete ptr;
+    }
     while(n->next != NULL) { //Process starting from head->next
         if (n->next->data == val) {
             cout << "Delete element " << n->next->data << " " ;
@@ -50,13 +57,7 @@ void LinkedList<T> :: deleteNodewithVal(T val) {
         }
         n = n->next;
     }
-    //Process head
-    if (head->data == val) {
-        ptr = head;
-        cout << "The element at head will be deleted " << head->data << endl;
-        head = head->next;
-        delete ptr;
-    }
+    
 }
 
 template <typename T> 
