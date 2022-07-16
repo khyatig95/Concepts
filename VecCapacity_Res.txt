@@ -1,0 +1,34 @@
+ Size of vector 0
+ Max size of vector 4611686018427387903
+ Capacity of vector 0
+
+Add elements
+ Size of vector 5
+ Max size of vector 4611686018427387903
+ Capacity of vector 5
+
+Downsize vector
+ Size of vector 3
+ Max size of vector 4611686018427387903
+ Capacity of vector 5
+
+Upsize vector
+ Size of vector 7
+ Max size of vector 4611686018427387903
+ Capacity of vector 7
+ Vector is : { 2 4 6 0 0 0 0  }
+
+Add elements
+ Size of vector 12
+ Max size of vector 4611686018427387903
+ Capacity of vector 14
+
+Shrink to fit
+ Size of vector 12
+ Max size of vector 4611686018427387903
+ Capacity of vector 12
+
+Reserve
+ Size of vector 12
+ Max size of vector 4611686018427387903
+ Capacity of vector 15

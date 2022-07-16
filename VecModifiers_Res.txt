@@ -1,0 +1,23 @@
+ Vector is : { 8 8 8  }
+ Size of vector 3
+ Capacity of vector 5
+
+Insert element 100 at pos 2
+ Vector is : { 8 8 100 8  }
+ Size of vector 4
+ Capacity of vector 5
+
+Delete element at pos 2
+ Vector is : { 8 8 8  }
+ Size of vector 3
+ Capacity of vector 5
+
+Emplace element 100 at pos 2
+ Vector is : { 8 8 100 8  }
+ Size of vector 4
+ Capacity of vector 5
+
+Clear vector
+ Vector is : {  }
+ Size of vector 0
+ Capacity of vector 5
