@@ -29,8 +29,8 @@ int partition(T* arr, int start, int end) {
 	while(start <=  end) {
 		while (arr[start] < pivot) start++; //Uptil start, all elements<pivot are at leftmost
 		while(arr[end] > pivot) end--; //All elements>pivot are at rightmost
-		if (start <= end) {
-			if (start!=end) swap(&arr[start], &arr[end]);
+		if (start < end) {
+			swap(&arr[start], &arr[end]);
 			printArr<T>(arr, size);
 			start++;
 			end--;
